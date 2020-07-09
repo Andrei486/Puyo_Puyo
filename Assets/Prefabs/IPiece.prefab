@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa920d5ca3dc1e54384b0a4d86d30e5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blocks: []
   pivot: {x: 0, y: 0}
   absolutePosition: {x: 0, y: 0}
   framesUntilDrop: 0
@@ -190,6 +191,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2131471945997498112, guid: aead9afd1e641494fa01c62b5a6a1b01,
+        type: 3}
+      propertyPath: position.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aead9afd1e641494fa01c62b5a6a1b01, type: 3}

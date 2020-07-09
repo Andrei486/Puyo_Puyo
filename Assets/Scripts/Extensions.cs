@@ -49,34 +49,27 @@ namespace Utilities{
 			return Vector2Int.RoundToInt(relativePosition.Rotate(angle) + pivot);
 		}
     }
-    public class Block
-    {
-        Color color;
-        public Vector2Int position;
-        public GameObject sprite;
+    // public class PuyoBlock
+    // {
+    //     public Color color;
+    //     public Vector2Int position;
+    //     public GameObject sprite;
         
-		public Block(Color color, Vector2Int relativePosition, GameObject sprite){
-			this.color = color;
-			this.position = relativePosition;
-			this.sprite = sprite;
-			SetColor();
-		}
+	// 	public PuyoBlock(Color color, Vector2Int relativePosition, GameObject sprite){
+	// 		this.color = color;
+	// 		this.position = relativePosition;
+	// 		this.sprite = sprite;
+	// 		SetColor();
+	// 	}
 
-		public void Move(Vector2Int movement){
-			/**Moves the block's sprite along the grid by movement (measured in spaces).!--*/
-			position += movement;
-		}
+	// 	public void Move(Vector2Int movement){
+	// 		/**Moves the block's sprite along the grid by movement (measured in spaces).!--*/
+	// 		position += movement;
+	// 		sprite.transform.Translate((Vector3) (Vector2) movement, Space.World);
+	// 	}
 
-		public void SetColor(){
-			sprite.GetComponent<SpriteRenderer>().color = color;
-		}
-    }
-
-    [Serializable]
-    public enum Direction
-    {
-        /**Use Next() to go clockwise, and Previous to go counterclockwise.!-- */
-        NORTH=0, EAST=1, SOUTH=2, WEST=3
-    }
-
+	// 	public void SetColor(){
+	// 		sprite.GetComponent<SpriteRenderer>().color = color;
+	// 	}
+    // }
 }

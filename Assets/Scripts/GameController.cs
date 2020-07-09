@@ -7,14 +7,18 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] //show colorMappings in the editor for easier setup
     private Color[] colors = new Color[4];
+    [SerializeField]
+    private GameObject[] piecePrefabs;
+    public GameObject backgroundTile;
     // Dimensions as (width, height)
     [SerializeField]
     public Vector2Int boardDimensions; //(x, y) size of grid in spaces.
     public Vector2 spaceDimensions; //(x, y) size of one space in world space.
-    System.Random rng;
+    public int minChainSize = 4;
+    System.Random rng = new System.Random();
     void Start()
     {
-        rng = new System.Random();
+
     }
 
     // Update is called once per frame
@@ -29,9 +33,14 @@ public class GameController : MonoBehaviour
         return colors[n];
     }
 
-    public Color GetRandomColor(){
-        /**Returns a random color from the color map.!--*/
-        return GetColor(rng.Next(colors.Length));
+    public int GetRandomColorIndex(){
+        /**Returns a random valid color index from the color map.!--*/
+        return rng.Next(colors.Length);
+    }
+
+    public GameObject GetRandomPiece(){
+        /**Returns a new instance of a random Puyo piece from the given prefabs.!--*/
+        return Instantiate(piecePrefabs[rng.Next(piecePrefabs.Length)]);
     }
 
     public static GameController GetController(){
