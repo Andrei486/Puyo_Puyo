@@ -10,6 +10,7 @@ public class BoardManager : MonoBehaviour
     public PuyoPiece activePiece;
     public Dictionary<KeyCode, Action> keyMappings = new Dictionary<KeyCode, Action>();
     public int framesPerDrop = 60;
+    public int score = 0;
     public GameController controller;
     public InputManager input;
     private PuyoBlock[,] grid;
@@ -88,10 +89,10 @@ public class BoardManager : MonoBehaviour
             LockPiece(); //first lock and destroy the old one if it exists
         }
         GroundAllBlocks(); //ground everything
-        ResolveChains(controller.minChainSize);
         activePiece = controller.GetRandomPiece().GetComponent<PuyoPiece>();
         activePiece.board = this;
         activePiece.transform.parent = transform;
+        StartCoroutine(ResolveChains(controller.minChainSize));
     }
 
     public void FallPiece(){
@@ -174,8 +175,7 @@ public class BoardManager : MonoBehaviour
         //remove groups from the board
         foreach (HashSet<PuyoBlock> group in seenGroups){
             foreach (PuyoBlock block in group){
-                grid[block.position.x, block.position.y] = null; //remove the block from the board
-                Destroy(block.gameObject);
+                StartCoroutine(DestroyBlock(block, 30));
             }
         }
         return seenGroups;
@@ -223,17 +223,25 @@ public class BoardManager : MonoBehaviour
         return groupedPuyoBlocks;
     }
 
-    public List<HashSet<PuyoBlock>> ResolveChains(int minSize){
+    public IEnumerator ResolveChains(int minSize){
         /**Resolves all chains, destroying Puyo groups and grounding pieces until
         there are no more chains.!--*/
+        if (activePiece != null){
+            activePiece.pause = true;
+        }
         List<HashSet<PuyoBlock>> resolvedGroups = new List<HashSet<PuyoBlock>>();
         List<HashSet<PuyoBlock>> newGroups = DestroyColorGroups(minSize);
         while (newGroups.Count > 0){
+            yield return new WaitForFrames(30);
             resolvedGroups.AddRange(newGroups);
             GroundAllBlocks();
             newGroups = DestroyColorGroups(minSize);
         }
-        return resolvedGroups;
+        if (activePiece != null){
+            activePiece.pause = false;
+        }
+        score += ScoreChain(resolvedGroups);
+        Debug.Log(score);
     }
 
     public void SetupBackground(GameObject bgTile){
@@ -249,5 +257,24 @@ public class BoardManager : MonoBehaviour
                 background.Add(tile);
             }
         }
+    }
+
+    public IEnumerator DestroyBlock(PuyoBlock block, int frames){
+        /**Destroys and removes block, showing a visual effect over frames.!--*/
+        grid[block.position.x, block.position.y] = null; //remove the block from the board
+        GameObject destroyEffect = Instantiate(controller.destroyEffect, block.gameObject.transform);
+        yield return new WaitForFrames(frames);
+        Destroy(destroyEffect);
+        Destroy(block.gameObject);
+    }
+
+    public int ScoreChain(List<HashSet<PuyoBlock>> groups){
+        /**Returns the total score corresponding to the chain represented by groups.!--*/
+        int puyoCount = (from g in groups select g.Count).Sum();
+        int chainPower = controller.ChainPower(groups.Count);
+        HashSet<int> colors = new HashSet<int>(from g in groups select g.ToList()[0].color);
+        int colorBonus = controller.ColorBonus(colors.Count);
+        int groupBonus = (from g in groups select controller.GroupBonus(g.Count)).Sum();
+        return 10 * puyoCount * Math.Max(Math.Min(chainPower + colorBonus + groupBonus, 999), 1);
     }
 }

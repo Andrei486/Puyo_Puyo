@@ -49,27 +49,21 @@ namespace Utilities{
 			return Vector2Int.RoundToInt(relativePosition.Rotate(angle) + pivot);
 		}
     }
-    // public class PuyoBlock
-    // {
-    //     public Color color;
-    //     public Vector2Int position;
-    //     public GameObject sprite;
-        
-	// 	public PuyoBlock(Color color, Vector2Int relativePosition, GameObject sprite){
-	// 		this.color = color;
-	// 		this.position = relativePosition;
-	// 		this.sprite = sprite;
-	// 		SetColor();
-	// 	}
 
-	// 	public void Move(Vector2Int movement){
-	// 		/**Moves the block's sprite along the grid by movement (measured in spaces).!--*/
-	// 		position += movement;
-	// 		sprite.transform.Translate((Vector3) (Vector2) movement, Space.World);
-	// 	}
+	public class WaitForFrames : CustomYieldInstruction{
+		/**Pauses the coroutine until a number of frames have passed.!--*/
+		int initialFrameCount;
+		Func<bool> condition;
 
-	// 	public void SetColor(){
-	// 		sprite.GetComponent<SpriteRenderer>().color = color;
-	// 	}
-    // }
+		public WaitForFrames(int toWait){
+			initialFrameCount = Time.frameCount;
+			condition = () => Time.frameCount - initialFrameCount < toWait;
+		}
+
+		public override bool keepWaiting{
+			get{
+				return condition();
+			}
+		}
+	}
 }

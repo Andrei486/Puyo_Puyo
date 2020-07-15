@@ -10,6 +10,7 @@ public class PuyoPiece : MonoBehaviour
     public Vector2Int absolutePosition; //The board position represented by (0, 0) in local coordinates.
     public int framesUntilDrop = 0;
     public BoardManager board;
+    public bool pause = false;
 
     protected virtual void Start()
     {
@@ -37,12 +38,14 @@ public class PuyoPiece : MonoBehaviour
 
     void LateUpdate()
     {
-        if (framesUntilDrop == 0){
-            //make piece fall
-            framesUntilDrop = board.framesPerDrop;
-            board.FallPiece();
-        } else {
-            framesUntilDrop--;
+        if (!pause){
+            if (framesUntilDrop == 0){
+                //make piece fall
+                framesUntilDrop = board.framesPerDrop;
+                board.FallPiece();
+            } else {
+                framesUntilDrop--;
+            }
         }
     }
 

@@ -18,8 +18,10 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        foreach (KeyCode key in keyMappings.Keys){
-            KeyUpdate(key);
+        if (!board.activePiece.pause){
+            foreach (KeyCode key in keyMappings.Keys){
+                KeyUpdate(key);
+            }
         }
     }
 

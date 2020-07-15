@@ -52,6 +52,8 @@ MonoBehaviour:
   - {fileID: 4899135003035300857, guid: 5eba1cc1460c8794cbfeb746fb098f6b, type: 3}
   backgroundTile: {fileID: 8633312861845490316, guid: 9719efa5c603b91449f3ddf9881137e5,
     type: 3}
-  boardDimensions: {x: 6, y: 10}
+  destroyEffect: {fileID: 6422020473127064415, guid: b3589cdb18172e04497ccf37f61f72be,
+    type: 3}
+  boardDimensions: {x: 8, y: 12}
   spaceDimensions: {x: 1, y: 1}
   minChainSize: 4
